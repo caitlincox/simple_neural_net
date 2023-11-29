@@ -5,8 +5,12 @@ from jax.scipy.special import logsumexp
 from jax.nn import relu, log_softmax, softmax
 from functools import partial
 
+#My first NN from scratch. 
+
+#Reference used: Jax docs for training a simple NN
+
 #old scale 1e-2
-#Starting values for weight and bias. Function is from Jax docs for training simple NN. 
+#Starting values for weight and bias. 
 #orig scale 1e-2
 def initWeightBias(weight_size, layer_size, key, scale=1):
   w_key, b_key = random.split(key)
@@ -76,8 +80,8 @@ def compGraph(current_params, num_layers, training_data, targets):
     return logLoss(targets, log_predictions)
 
 
-#This is the other function I copied more or less exactly 
-# from the JAX neural net guide
+#Static args used to prevent JAX autograd from getting angry.
+#See JAX NN guide
 @partial(jit, static_argnums=3)
 def update(params, targets, training_data, num_layers, step_size):
   grads = grad(compGraph)(params, num_layers, training_data, targets)
